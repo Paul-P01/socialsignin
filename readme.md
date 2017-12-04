@@ -4,7 +4,7 @@ A page designed to match the technical assessment requirements of building an RS
 
 ## Overview
 
-There is a live example of the page running here (http://www.socialsignin.powerloop.co.uk)
+There is a live example of the page running here (http://socialsignin.powerloop.co.uk/rsa.html)
 
 This running example is based on the BBC list of feeds and will add BBC Technology and BBC Sc-Tech if no other feeds are found in local storage.
 
@@ -13,6 +13,8 @@ This running example is based on the BBC list of feeds and will add BBC Technolo
 The page is 'somewhat' functional. It is possible to add and remove feeds and the page does to a certain level refresh. However the logic in the JS is not yet perfect in this and does add repeated feeds! Due to this same issue feeds are not instantly removed when they are removed from the feed list. Refreshing the page does resolve this.
 
 There is an issue with the height of the boxes as the Masonry.js does not deal well with dynamic heights on the 'Grid-Items' it turns out. I am sure with some work and tweaking this could be resolved.
+
+The Filter feature is not active yet.
 
 ## Lirarys Used
 
