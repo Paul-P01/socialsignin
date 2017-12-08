@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<title>Personal RSA Feed</title>
-		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
 		<link rel="stylesheet" href="rsaFeedCss.css">
 		<link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,700,900" rel="stylesheet">
 	</head>
@@ -12,11 +11,10 @@
 			<header>
 				<h1>Content Generator</h1>
 			</header>
-			<div id="filter">
-				<input id="filter" type="sectionarch" placeholder="Filter your feeds..." /><i class="fa fa-search" aria-hidden="true"></i>
+			<div id="filter-container">
+				<input id="filter" type="search" placeholder="Filter your feeds..." /><i class="fa fa-search" aria-hidden="true"></i>
 			</div>
 			<div id="subscribed_feeds">
-				<!-- <div class="feed"><i class="fa fa-circle-o" aria-hidden="true"></i><h3 class="feedName">Feed Name</h3><i class="fa fa-times-circle" aria-hidden="true"></i></div> -->
 			</div>
 			<div class="divider"></div>
 			<div id="add_new">
@@ -27,10 +25,10 @@
 			</div>
 		</aside>
 		<main id="main">
-			<section id="grid" class="grid">
+			<section id="grid" class="grid flex-grid">
 			</section>
 			<template id="content-card">
-				<article class="grid-item">
+				<article class="grid-item flex-item">
 					<header class="article_header">
 						<a class="external-link-link"><i class="fa fa-external-link" aria-hidden="true"></i></a>
 						<h4 class="title"></h4>
@@ -52,15 +50,15 @@
 		<script src="date.js"></script>
 		<script src="https://use.fontawesome.com/2c445eff8c.js"></script>
 		<script>
-			// populateGrid();
 			document.getElementById("subscribed_feeds").innerHTML = populateFeedList2();
-
 			$('#submit').click(function() {
 				var feedName = ($("#feedName").val());
 				var feedURL = ($("#feedURL").val());
 				addFeed2(feedName, feedURL);
-				// storeRssFeeds();
 			});
 		</script>
 	</body>
 </html>
+
+
+

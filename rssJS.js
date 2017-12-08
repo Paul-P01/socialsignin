@@ -1,12 +1,5 @@
 populateGrid();
 
-var mediaContainer = $('.grid').masonry({
-  // options
-  itemSelector: '.grid-item',
-  columnWidth: 400,
-  gutter: 20
-});
-
 function populateGrid() {
   if (typeof(Storage) !== "undefined") {
     if (localStorage.getItem("feeds") === null) {
@@ -14,57 +7,48 @@ function populateGrid() {
     } else {
       var feeds = JSON.parse(localStorage.getItem("feeds"));
       for (var i in feeds) {
-        $.ajax({
-          url: 'https://api.rss2json.com/v1/api.json',
-          method: 'GET',
-          dataType: 'json',
-          data: {
-            rss_url: feeds[i].feedURL,
-            api_key: 'na85pu9s3lpm1j4katsa2elykvajefuqstwgjbdh', // put your api key here
-            count: 5
-          }
-        }).done(function(response) {
-          if (response.status != 'ok') {
-            throw response.message;
-          }
-          // console.log('====== ' + response.feed.title + ' ======');
-          for (var i in response.items) {
-            var item = response.items[i];
-            var feed = {};
-            feed = {
-              'pubDate': item.pubDate,
-              'feedName': response.feed.title,
-              'title': item.title,
-              'thumbnail': item.thumbnail,
-              'link': item.link,
-              'description': item.description
-            };
-            buildGrid(feed);
-          }
-
-   		// $('.grid-item').each(function(i, obj) {
-			// $(obj).height(function(n,c){
-			// 	console.log ("c = ",c);
-			// 	console.log ("n = ",n)
-			//  		// return c+210;
-			//  	});
-			// });
-
-			$(mediaContainer).masonry('reloadItems');
-			$(mediaContainer).masonry('layout');
-
-        });
-      }
-    }
-  } else {
-    // Sorry! No Web Storage support..
-  }
+        getData(feeds[i].feedURL);
+    	}
+  	}
+	} else {
+  // Sorry! No Web Storage support..
+	}
 }
 
-function buildGrid(result) {
+function getData(feedURL,feedIndex)	{
+	$.ajax({
+    url: 'https://api.rss2json.com/v1/api.json',
+    method: 'GET',
+    dataType: 'json',
+    data: {
+      rss_url: feedURL,
+      api_key: 'na85pu9s3lpm1j4katsa2elykvajefuqstwgjbdh', // put your api key here
+      count: 6
+    }
+  }).done(function(response) {
+    if (response.status != 'ok') {
+      throw response.message;
+    }
+    for (var i in response.items) {
+      var item = response.items[i];
+      var feed = {};
+      feed = {
+        'pubDate': item.pubDate,
+        'feedName': response.feed.title,
+        'title': item.title,
+        'thumbnail': item.thumbnail,
+        'link': item.link,
+        'description': item.description
+      };
+     	buildGrid(feed,feedIndex);
+		}
+  });
+}
+
+function buildGrid(result, feedIndex) {
 	var $template = $('#content-card').clone();
 	var newItem = $template.prop('content');
-
+	$(newItem).find('.grid-item').addClass(String(feedIndex));
 	$(newItem).find('.title').text(result.feedName);
 	var d = new Date(result.pubDate).toString('MMM dd yyyy | hh:mm');;
 	$(newItem).find('.timestamp').text(d);
@@ -72,20 +56,17 @@ function buildGrid(result) {
 		$(newItem).find('.image-link').attr('href', result.link).attr('target', '_blank');
 		$(newItem).find('.external-link-link').attr('href', result.link).attr('target', '_blank');
 		$(newItem).find('.article-image').attr('src', result.thumbnail).attr('alt', 'BBC News Image').addClass('thumbnail');
+	}else	{
+		$(newItem).find('figure').remove();
 	}
 	$(newItem).find('.content-copy').text(result.title);
 	$(newItem).find('.article_snippet').text(result.description);
-	$(newItem).find('.grid-item').height(function(idx, height) {
-		// console.log(height);
-		return height + '460';
-	})
 	$('.grid').append(newItem);
 }
 
 function addFeed2(feedName, feedURL)	{
 	if (typeof(Storage) !== "undefined") {
 		if (localStorage.getItem("feeds") === null) {
-			console.log("Nothing there")
 			feeds = [];
 			localStorage.setItem("feeds", JSON.stringify(feeds));
 		}else	{
@@ -94,10 +75,10 @@ function addFeed2(feedName, feedURL)	{
 		}
 	}
 		feeds.push({'feedName':feedName, 'feedURL':feedURL});
+		feedIndex = feeds.length - 1;
 		localStorage.setItem("feeds", JSON.stringify(feeds));
 		document.getElementById("subscribed_feeds").innerHTML = populateFeedList2();
-		console.log("Added");
-		populateGrid();
+		getData(feedURL,feedIndex);
 }
 
 function removeFeed2(index)	{
@@ -105,12 +86,11 @@ function removeFeed2(index)	{
 		if (localStorage.getItem("feeds") === null) {
 			//code to hande no entries
 		}else	{
-			console.log ("Removing",index);
 			var feeds = JSON.parse(localStorage.getItem("feeds"));
 			feeds.splice(index,1);
 			localStorage.setItem("feeds", JSON.stringify(feeds));
 			document.getElementById("subscribed_feeds").innerHTML = populateFeedList2();
-			populateGrid();
+			$( "." + index ).remove();
 		}
 	}
 }
