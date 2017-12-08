@@ -1,4 +1,4 @@
-# Social Signup Technical
+# SocialSignIn Technical
 
 A page designed to match the technical assessment requirements of building an RSS Feed Reader using HTML and CSS. 
 
@@ -6,7 +6,7 @@ A page designed to match the technical assessment requirements of building an RS
 
 There is a live example of the page running here (http://socialsignin.powerloop.co.uk/rsa.html)
 
-This running example is based on the BBC list of feeds and will add BBC Technology and BBC Sc-Tech if no other feeds are found in local storage.
+This running example is based on the BBC list of feeds and will add BBC Technology and BBC Sci-Tech if no other feeds are found in local storage.
 
 The gridwork and cards are now styled using flexbox rather than the masonry.js library.
 
@@ -16,7 +16,7 @@ As feeds are added and removoed they are added and removed from the active scree
 
 The Filter feature is not active yet.
 
-## Lirarys Used
+## Librarys Used
 
 ### date.js (http://www.datejs.com/)
 
